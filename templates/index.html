@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Valentine's Week</title>
+ <style>
+ body { text-align: center; font-family: Arial, sans-serif; background-color: pink; overflow: hidden; transition: background 1s; }
+ .container { margin-top: 50px; }
+ .day { display: inline-block; padding: 20px; margin: 10px; background: white; cursor: pointer; border-radius: 10px; font-weight: bold; }
+ .popup { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 20px; border-radius: 10px; z-index: 10; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); }
+ @keyframes floatUp {
+ from { transform: translateY(100vh); opacity: 0; }
+ to { transform: translateY(-10vh); opacity: 1; }
+ }
+ .emoji {
+ position: absolute;
+ font-size: 24px;
+ animation: floatUp 5s linear forwards;
+ }
+ </style>
+</head>
+<body>
+ <h1>Valentine's Week</h1>
+ <div class="container" id="days-container"></div>
+ 
+ <div id="popup" class="popup">
+ <p id="popup-text"></p>
+ <button onclick="closePopup()">Close</button>
+ </div>
+
+ <script>
+ const days = [
+ { name: 'Rose Day', emoji: '🌹' },
+ { name: 'Propose Day', emoji: '💍' },
+ { name: 'Chocolate Day', emoji: '🍫' },
+ { name: 'Teddy Day', emoji: '🧸' },
+ { name: 'Promise Day', emoji: '🤞' },
+ { name: 'Hug Day', emoji: '🤗' },
+ { name: 'Kiss Day', emoji: '😘' },
+ { name: 'Valentine\'s Day', emoji: '❤️', special: true }
+ ];
+
+ const container = document.getElementById('days-container');
+ days.forEach(day => {
+ const dayDiv = document.createElement('div');
+ dayDiv.className = 'day';
+ dayDiv.innerText = day.name;
+ dayDiv.onclick = () => showPopup(day.name, day.emoji, day.special || false);
+ container.appendChild(dayDiv);
+ });
+
+ function showPopup(dayName, emoji, isValentine) {
+ console.log("Clicked:", dayName, "Emoji:", emoji, "Is Valentine:", isValentine); // Debugging output
+
+ // Show popup message
+ document.getElementById("popup-text").innerText = "Happy " + dayName + "!";
+ document.getElementById("popup").style.display = "block";
+
+ // Reset background before applying new one
+ document.body.style.backgroundColor = "pink";
+
+ if (isValentine) {
+ document.body.style.backgroundColor = "red";
+ createFloatingEmojis('❤️');
+ } else {
+ createFloatingEmojis(emoji);
+ }
+ }
+
+ function closePopup() {
+ document.getElementById("popup").style.display = "none";
+ }
+
+ function createFloatingEmojis(emoji) {
+ for (let i = 0; i < 20; i++) {
+ setTimeout(() => {
+ const floatingEmoji = document.createElement('div');
+ floatingEmoji.classList.add('emoji');
+ floatingEmoji.innerHTML = emoji;
+ floatingEmoji.style.left = Math.random() * 100 + 'vw';
+ floatingEmoji.style.animationDuration = Math.random() * 3 + 2 + 's';
+ floatingEmoji.style.fontSize = Math.random() * 20 + 20 + 'px';
+ document.body.appendChild(floatingEmoji);
+ setTimeout(() => floatingEmoji.remove(), 5000);
+ }, i * 200);
+ }
+ }
+ </script>
+</body>
+</html>
